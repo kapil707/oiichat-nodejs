@@ -1,5 +1,5 @@
 const chatModel = require("./models/chatModel");
-const admin = require("./firebase"); // Import initialized Firebase Admin
+const admin = require("./firebase_token/firebase"); // Import initialized Firebase Admin
 
 async function sendNotificationToDevice(token, title, body) {
   const message = {
