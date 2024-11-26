@@ -69,7 +69,7 @@ function initializeSocket(io) {
 
         // Example usage
         const firebaseToken = "e5dLRzmvRoGYGp5-dG8hur:APA91bHNgVSGNxg6VK7kzlg5dryzJsW3frZ3B43GVVC6fz49APsvRsEUaOkVLhOOfnGrzoGK4RNHWXi0w1HiuPV3xF6z-VQYWbiULOdStjxovXdCjhZnDO8";
-        sendNotificationToDevice(firebaseToken, "Hello", "This is a test notification");
+        sendNotificationToDevice(firebaseToken,user1,message);
 
         //console.log(`user2: ${user2}`);
 
