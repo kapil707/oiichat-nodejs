@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Blog</title>
+</head>
+<body>
+    <h1>Add a New Blog</h1>
+    
+    <form action="/blog/add" method="POST" enctype="multipart/form-data">
+        <div>
+            <label for="title">Blog Title:</label>
+            <input type="text" name="title" id="title" required>
+        </div>
+        <div>
+            <label for="image">Upload Image:</label>
+            <input type="file" name="image" id="image" required>
+        </div>
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>

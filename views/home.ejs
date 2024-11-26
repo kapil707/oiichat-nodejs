@@ -1,0 +1,30 @@
+<h1>hello hows you?</h1>
+
+<table border="1">
+    <tr>
+        <td>firstName</td>
+        <td>LastName</td>
+        <td>delete</td>
+    </tr>
+<% allUsers.forEach((element,index) => { %>
+    <tr>
+        <td>
+            <%= element.name %>
+        </td>
+        <td>
+            <%= element.email %>
+        </td>
+        <td>
+            <form method="delete" action="/api/users">
+                <input type="text" name="id" value="<%= element.id %>">
+                <button type="submit">Save</button>
+            </form>
+        </td>
+    </tr>
+<% }) %>
+</table>
+<form method="post" action="/api/users">
+    <input type="text" name="firstName">
+    <input type="text" name="lastName">
+    <button type="submit">Save</button>
+</form>

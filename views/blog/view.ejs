@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog List</title>
+</head>
+<body>
+    <h1>Blog List</h1>
+    <a href="/blog/add">Add New Blog</a>
+    <% if (blogs && blogs.length > 0) { %>
+        <ul>
+            <% blogs.forEach(blog => { %>
+                <li>
+                    <h2><%= blog.title %></h2>
+                    <% if (blog.image) { %>
+                        <img src="<%= blog.image %>" alt="Blog Image" style="max-width: 300px;">
+                    <% } %>
+                    <p><%= blog.description %></p>
+                    <p>Posted on <%= new Date(blog.createdAt).toDateString() %></p>
+                    <a href="/blog/edit/<%= blog._id %>">Edit</a>
+                    <button onclick="deleteBlog('<%= blog._id %>')">Delete</button>
+                </li>
+            <% }) %>
+        </ul>
+    <% } else { %>
+        <p>No blogs available.</p>
+    <% } %>
+</body>
+</html>
+
+<script>
+    function deleteBlog(blogId) {
+        console.log('Delete function called with ID:', blogId);
+        fetch(`/blog/delete/${blogId}`, {
+            method: 'DELETE'
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Response:', data);
+            if (data.msg === 'Success') {
+                alert('Blog deleted successfully');
+                location.reload();
+            } else {
+                alert('Error deleting blog: ' + data.msg);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error deleting blog');
+        });
+    }
+</script>
+
