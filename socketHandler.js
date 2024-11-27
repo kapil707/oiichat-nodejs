@@ -73,6 +73,7 @@ function initializeSocket(io) {
         if(!user){
           // Example usage
           var firebaseToken = user.firebaseToken;
+          console.log(user.name);
           sendNotificationToDevice(firebaseToken,user1,message);
         }
 
