@@ -1,4 +1,5 @@
 const chatModel = require("./models/chatModel");
+const userModel = require("./models/userModel");
 const admin = require("./firebase_token/firebase"); // Import initialized Firebase Admin
 
 async function sendNotificationToDevice(token, title, body) {
@@ -67,9 +68,13 @@ function initializeSocket(io) {
           messageId:messageId
         });
 
-        // Example usage
-        const firebaseToken = "e5dLRzmvRoGYGp5-dG8hur:APA91bHNgVSGNxg6VK7kzlg5dryzJsW3frZ3B43GVVC6fz49APsvRsEUaOkVLhOOfnGrzoGK4RNHWXi0w1HiuPV3xF6z-VQYWbiULOdStjxovXdCjhZnDO8";
-        sendNotificationToDevice(firebaseToken,user1,message);
+        const userId = mongoose.Types.ObjectId(user2); // Convert string to ObjectId
+        const user = await userModel.findOne({ _id: userId });
+        if(!user){
+          // Example usage
+          var firebaseToken = user.firebaseToken;
+          sendNotificationToDevice(firebaseToken,user1,message);
+        }
 
         //console.log(`user2: ${user2}`);
 
