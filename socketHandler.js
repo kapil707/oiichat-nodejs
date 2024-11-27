@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const chatModel = require("./models/chatModel");
 const userModel = require("./models/userModel");
 const admin = require("./firebase_token/firebase"); // Import initialized Firebase Admin
