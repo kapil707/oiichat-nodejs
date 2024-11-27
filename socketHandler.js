@@ -69,12 +69,13 @@ function initializeSocket(io) {
         });
 
         //const userId = mongoose.Types.ObjectId(user2); // Convert string to ObjectId
-        const user = await userModel.findOne({ _id: user2 });
-        if(user){
+        const user1_dt = await userModel.findOne({ _id: user1 });
+        const user2_dt = await userModel.findOne({ _id: user2 });
+        if(user2_dt){
           // Example usage
-          var firebaseToken = user.firebase_token;
-          console.log(user.name);
-          sendNotificationToDevice(firebaseToken,user1,message);
+          var user_name = user1_dt.name;
+          var firebaseToken = user2_dt.firebase_token;
+          sendNotificationToDevice(firebaseToken,user_name,message);
         }
 
         //console.log(`user2: ${user2}`);
