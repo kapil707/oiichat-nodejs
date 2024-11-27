@@ -70,7 +70,7 @@ function initializeSocket(io) {
 
         //const userId = mongoose.Types.ObjectId(user2); // Convert string to ObjectId
         const user = await userModel.findOne({ _id: user2 });
-        if(!user){
+        if(user){
           // Example usage
           var firebaseToken = user.firebase_token;
           console.log(user.name);
