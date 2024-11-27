@@ -72,7 +72,7 @@ function initializeSocket(io) {
         const user = await userModel.findOne({ _id: user2 });
         if(!user){
           // Example usage
-          var firebaseToken = user.firebaseToken;
+          var firebaseToken = user.firebase_token;
           console.log(user.name);
           sendNotificationToDevice(firebaseToken,user1,message);
         }
