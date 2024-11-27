@@ -1,10 +1,44 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const userModel = require("../models/userModel")
+const userModel = require("../models/userModel");
+const multer = require('multer');
+const upload = multer({ dest: 'uploads/' });
 
 // async function getAllUserKapil() {
 //     return await userModel.find({});
 // }
+
+async function profile_upload(req,res) {
+    try {
+        // Check if file is uploaded
+        if (!req.file) {
+          return res.status(400).send({
+            status: 0,
+            message: 'No file uploaded!',
+          });
+        }
+    
+        // Get file details
+        const filePath = req.file.path;
+    
+        // Optionally save the file path to your database
+        // Example: Save to user's profile in MongoDB
+        // const result = await UserModel.findByIdAndUpdate(req.user.id, { profilePicture: filePath });
+    
+        res.status(200).send({
+          status: 1,
+          message: 'File uploaded successfully!',
+          filePath: filePath, // Return file path or URL
+        });
+      } catch (error) {
+        console.error('Error uploading file:', error);
+        res.status(500).send({
+          status: 0,
+          message: 'File upload failed!',
+          error: error.message,
+        });
+      }
+    }
 
 async function getAllUser(req,res) {
     const users = await userModel.find({});
@@ -108,5 +142,6 @@ async function registerUser(req,res) {
 module.exports = {
     loginUser,
     registerUser,
-    getAllUser
+    getAllUser,
+    profile_upload
 };
