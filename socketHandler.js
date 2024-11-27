@@ -68,20 +68,9 @@ function initializeSocket(io) {
           messageId:messageId
         });
 
-        //const userId = mongoose.Types.ObjectId(user2); // Convert string to ObjectId
-        const user1_dt = await userModel.findOne({ _id: user1 });
-        const user2_dt = await userModel.findOne({ _id: user2 });
-        if(user2_dt){
-          // Example usage
-          var user_name = user1_dt.name;
-          var firebaseToken = user2_dt.firebase_token;
-          sendNotificationToDevice(firebaseToken,user_name,message);
-        }
-
-        //console.log(`user2: ${user2}`);
-
         const recipientSocketIds = users[user2];
         if (recipientSocketIds) {
+          //jab user active ha
           io.to(recipientSocketIds).emit("receiveMessage", {
             user1, // The sender of the message
             user2, // The recipient of the message
@@ -92,10 +81,15 @@ function initializeSocket(io) {
           await newMessage.save();
           //console.log(`receiveMessage: ${recipientSocketIds}`);
         } else {
-          socket.emit("user_offline", {
-            user2,
-            message: `User ${user2} is offline.`,
-          });
+          //jab user offline ha to
+          //const userId = mongoose.Types.ObjectId(user2); // Convert string to ObjectId
+          const user1_dt = await userModel.findOne({ _id: user1 });
+          const user2_dt = await userModel.findOne({ _id: user2 });
+          if(user1_dt && user2_dt){
+            var user_name = user1_dt.name;
+            var firebaseToken = user2_dt.firebase_token;
+            sendNotificationToDevice(firebaseToken,user_name,message);
+          }
         }
       } catch (error) {
         console.error("Error saving message:", error.message);
