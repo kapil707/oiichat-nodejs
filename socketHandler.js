@@ -1,4 +1,3 @@
-const mongoose = require('mongoose');
 const chatModel = require("./models/chatModel");
 const userModel = require("./models/userModel");
 const admin = require("./firebase_token/firebase"); // Import initialized Firebase Admin
@@ -69,8 +68,8 @@ function initializeSocket(io) {
           messageId:messageId
         });
 
-        const userId = mongoose.Types.ObjectId(user2); // Convert string to ObjectId
-        const user = await userModel.findOne({ _id: userId });
+        //const userId = mongoose.Types.ObjectId(user2); // Convert string to ObjectId
+        const user = await userModel.findOne({ _id: user2 });
         if(!user){
           // Example usage
           var firebaseToken = user.firebaseToken;
