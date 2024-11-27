@@ -71,10 +71,12 @@ function initializeSocket(io) {
         const recipientSocketIds = users[user2];
         if (recipientSocketIds) {
           //jab user active ha
+          const user2_dt = await userModel.findOne({ _id: user2 });
           io.to(recipientSocketIds).emit("receiveMessage", {
             user1, // The sender of the message
             user2, // The recipient of the message
             message, // The content of the message
+            name:user2_dt.name,
           });
           // Update status to Delivered (1)
           newMessage.status = 1;
