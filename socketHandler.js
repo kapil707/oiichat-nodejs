@@ -56,7 +56,9 @@ function initializeSocket(io) {
       const isOnline = users.hasOwnProperty(targetUserId);
       const status = isOnline ? "online" : "offline";
       console.log(`Status of ${targetUserId}: ${status}`);
-      callback({ userId: targetUserId, status });
+      
+       // Send the status back to the client
+      socket.emit("user_status_response", { userId, status });
     });
 
     // Handle manual disconnect
