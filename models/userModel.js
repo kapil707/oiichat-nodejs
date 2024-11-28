@@ -16,6 +16,8 @@ const userSchema = new mongoose.Schema({
         type:String,
     },firebase_token:{
         type:String,
+    },user_online_time:{
+        type:String,
     }
 },{timestamps:true});
 
