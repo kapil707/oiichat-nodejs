@@ -38,6 +38,7 @@ function initializeSocket(io) {
       console.log(`${username} registered with socket ID: ${socket.id}`);
       //update online status
       const result = userModel.findByIdAndUpdate(username, { user_online_time: "Online" });
+      console.log("insert online");
     });
 
     // Handle manual disconnect
