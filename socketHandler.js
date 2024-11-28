@@ -6,7 +6,8 @@ async function insert_user_online_status(user1) {
   
   const result = await userModel.findByIdAndUpdate(
     user1, // User ID (_id)
-    { user_online_time: "Online" }
+    { user_online_time: "Online" }, // Update field
+    { new: true } // Option to return the updated document
   );
   
   console.log("Updated User:", result);
