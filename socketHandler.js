@@ -52,7 +52,7 @@ function initializeSocket(io) {
 
       socket.emit('get_user_info_response', {
         status: "Online",
-        user_id: user_id
+        user_id: user1
       });
     });
 
