@@ -49,18 +49,10 @@ function initializeSocket(io) {
       console.log(`${username} registered with socket ID: ${socket.id}`);
       //update online status
       insert_user_online_status(user1,"Online");
-    });
 
-    // Handle request to fetch another user's status
-    socket.on("get_user_status", (data) => {
-      const userId = data.userId;
-      const isOnline = users.hasOwnProperty(userId);
-      const status = isOnline ? "online" : "offline";
-    
-      // Send the status back to the client
-      socket.emit("user_status_response", { userId, status });
+      const status = "online";
+      socket.emit("user_info_response", { userId, status });
     });
-    
 
     // Handle manual disconnect
     socket.on("manual_disconnect", (username) => {
@@ -70,6 +62,9 @@ function initializeSocket(io) {
         user_online_time: "oofline",
       });
       delete users[username];
+      
+      const status = "online";
+      socket.emit("user_info_response", { userId, status });
     });
 
     // Disconnect user
