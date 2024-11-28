@@ -76,7 +76,8 @@ function initializeSocket(io) {
             user1, // The sender of the message
             user2, // The recipient of the message
             message, // The content of the message
-            name:user1_dt.name,
+            user_name:user1_dt.name,
+            user_image:user1_dt.user_image,
           });
           // Update status to Delivered (1)
           newMessage.status = 1;
