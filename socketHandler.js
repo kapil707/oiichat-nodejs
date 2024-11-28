@@ -118,9 +118,10 @@ function initializeSocket(io) {
 
     // Handle message sending
     socket.on("get_user_info", async (user_id) => {
-      console.log(`user id ${user_id}`);
+      const user_dt = await userModel.findOne({ _id: user_id });
+
       socket.emit('get_user_info_response', {
-        status: 'online',
+        status: user_dt.user_online_time,
         user_id: user_id
       });
     });
