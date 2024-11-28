@@ -79,6 +79,7 @@ function initializeSocket(io) {
             user_name:user1_dt.name,
             user_image:user1_dt.user_image,
           });
+          console.log(`user1_dt.user_image: ${user1_dt.user_image}`);
           // Update status to Delivered (1)
           newMessage.status = 1;
           await newMessage.save();
