@@ -57,6 +57,7 @@ function initializeSocket(io) {
       socket.emit('user_info_response', {
         user_online_time: user_dt.user_online_time,
       });
+      console.log(`user_info`);
     });
 
     // Handle manual disconnect
