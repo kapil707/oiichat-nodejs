@@ -2,6 +2,16 @@ const chatModel = require("./models/chatModel");
 const userModel = require("./models/userModel");
 const admin = require("./firebase_token/firebase"); // Import initialized Firebase Admin
 
+async function insert_user_online_status(user1) {
+  
+  const result = await userModel.findByIdAndUpdate(
+    user1, // User ID (_id)
+    { user_online_time: "Online" }
+  );
+  
+  console.log("Updated User:", result);
+}
+
 async function sendNotificationToDevice(token, title, body) {
   const message = {
     notification: {
@@ -37,8 +47,7 @@ function initializeSocket(io) {
       users[username] = socket.id; // Map username to socket ID
       console.log(`${username} registered with socket ID: ${socket.id}`);
       //update online status
-      const result = userModel.findByIdAndUpdate(user1, { user_online_time: "Online" });
-      console.log("insert online"+result);
+      insert_user_online_status(user1);
     });
 
     // Handle manual disconnect
