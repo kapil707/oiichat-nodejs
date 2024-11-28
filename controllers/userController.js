@@ -23,7 +23,7 @@ async function profile_upload(req,res) {
     
         // Optionally save the file path to your database
         // Example: Save to user's profile in MongoDB
-        // const result = await UserModel.findByIdAndUpdate(req.user.id, { profilePicture: filePath });
+        const result = await UserModel.findByIdAndUpdate(req.user.id, { user_image: filePath });
     
         res.status(200).send({
           status: 1,

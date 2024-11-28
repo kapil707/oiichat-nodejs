@@ -12,6 +12,8 @@ const userSchema = new mongoose.Schema({
     },password:{
         type:String,
         required:true,
+    },user_image:{
+        type:String,
     },firebase_token:{
         type:String,
     }
