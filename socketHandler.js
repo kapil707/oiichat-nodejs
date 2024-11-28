@@ -10,7 +10,7 @@ async function insert_user_online_status(user1,status) {
     { new: true } // Option to return the updated document
   );
   
-  console.log("Updated User:", result);
+  //console.log("Updated User:", result);
 }
 
 async function sendNotificationToDevice(token, title, body) {
