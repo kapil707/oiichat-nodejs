@@ -2,11 +2,11 @@ const chatModel = require("./models/chatModel");
 const userModel = require("./models/userModel");
 const admin = require("./firebase_token/firebase"); // Import initialized Firebase Admin
 
-async function insert_user_online_status(user1) {
+async function insert_user_online_status(user1,status) {
   
   const result = await userModel.findByIdAndUpdate(
     user1, // User ID (_id)
-    { user_online_time: "Online" }, // Update field
+    { user_online_time: status }, // Update field
     { new: true } // Option to return the updated document
   );
   
@@ -48,12 +48,13 @@ function initializeSocket(io) {
       users[username] = socket.id; // Map username to socket ID
       console.log(`${username} registered with socket ID: ${socket.id}`);
       //update online status
-      insert_user_online_status(user1);
+      insert_user_online_status(user1,"Online");
     });
 
     // Handle manual disconnect
     socket.on("manual_disconnect", (username) => {
       console.log(`${username} manually disconnected.`);
+      insert_user_online_status(username,"offline");
       delete users[username];
     });
 
@@ -63,6 +64,7 @@ function initializeSocket(io) {
         if (socketId === socket.id) {
           delete users[username];
           console.log(`${username} disconnected`);
+          insert_user_online_status(username,"offline");
           break;
         }
       }
