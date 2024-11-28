@@ -120,7 +120,7 @@ function initializeSocket(io) {
     socket.on("get_user_info", async ({ user_id }) => {
       socket.emit('get_user_info_response', {
         status: 'online',
-        user_id: user_id
+        user_id
       });
     });
   });
