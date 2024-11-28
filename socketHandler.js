@@ -122,6 +122,16 @@ function initializeSocket(io) {
     });
 
     // Handle message sending
+    socket.on("userTyping", async ({ user1, user2, status }) => {
+        const recipientSocketIds = users[user2];
+        if (recipientSocketIds) {
+          io.to(recipientSocketIds).emit("receiveTyping", {
+            status:status
+          });
+        }
+    });
+
+    // Handle message sending
     socket.on("get_user_info", async (user_id) => {
       const user_dt = await userModel.findOne({ _id: user_id });
 
