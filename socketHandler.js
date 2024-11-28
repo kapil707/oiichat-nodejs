@@ -123,6 +123,7 @@ function initializeSocket(io) {
 
     // Handle message sending
     socket.on("userTyping", async ({ user1, user2, status }) => {
+      console.log('userTyping');
         const recipientSocketIds = users[user2];
         if (recipientSocketIds) {
           io.to(recipientSocketIds).emit("receiveTyping", {
