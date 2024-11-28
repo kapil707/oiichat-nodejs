@@ -37,7 +37,7 @@ function initializeSocket(io) {
       users[username] = socket.id; // Map username to socket ID
       console.log(`${username} registered with socket ID: ${socket.id}`);
       //update online status
-      const result = userModel.findByIdAndUpdate(username, { user_online_time: "Online" });
+      const result = userModel.findByIdAndUpdate(user1, { user_online_time: "Online" });
       console.log("insert online");
     });
 
