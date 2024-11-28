@@ -51,20 +51,17 @@ function initializeSocket(io) {
       insert_user_online_status(user1,"Online");
 
       const status = "online";
-      socket.emit("user_info_response", { user1, status });
+      socket.emit("user_info_response", { user_id:username, status });
     });
 
     // Handle manual disconnect
     socket.on("manual_disconnect", (username) => {
       console.log(`${username} manually disconnected.`);
       insert_user_online_status(username,"offline");
-      socket.emit('user_info_response', {
-        user_online_time: "oofline",
-      });
       delete users[username];
 
       const status = "online";
-      socket.emit("user_info_response", { username, status });
+      socket.emit("user_info_response", { user_id:username, status });
     });
 
     // Disconnect user
