@@ -49,6 +49,11 @@ function initializeSocket(io) {
       console.log(`${username} registered with socket ID: ${socket.id}`);
       //update online status
       insert_user_online_status(user1,"Online");
+
+      socket.emit('get_user_info_response', {
+        status: "Online",
+        user_id: user_id
+      });
     });
 
     // Handle manual disconnect
