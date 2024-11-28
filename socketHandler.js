@@ -51,13 +51,12 @@ function initializeSocket(io) {
       insert_user_online_status(user1,"Online");
     });
 
-    //iss say user ki sari info ati ha
-    socket.on("user_info",async (user_id) => {
-      const user_dt = await userModel.findOne({ _id: user_id });
-      socket.emit('user_info_response', {
-        user_online_time: user_dt.user_online_time,
-      });
-      console.log(`user_info`);
+    // Handle request to fetch another user's status
+    socket.on("get_user_status", (targetUserId, callback) => {
+      const isOnline = users.hasOwnProperty(targetUserId);
+      const status = isOnline ? "online" : "offline";
+      console.log(`Status of ${targetUserId}: ${status}`);
+      callback({ userId: targetUserId, status });
     });
 
     // Handle manual disconnect
