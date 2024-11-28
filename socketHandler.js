@@ -52,14 +52,15 @@ function initializeSocket(io) {
     });
 
     // Handle request to fetch another user's status
-    socket.on("get_user_status", (targetUserId, callback) => {
-      const isOnline = users.hasOwnProperty(targetUserId);
+    socket.on("get_user_status", (data) => {
+      const userId = data.userId;
+      const isOnline = users.hasOwnProperty(userId);
       const status = isOnline ? "online" : "offline";
-      console.log(`Status of ${targetUserId}: ${status}`);
-      
-       // Send the status back to the client
+    
+      // Send the status back to the client
       socket.emit("user_status_response", { userId, status });
     });
+    
 
     // Handle manual disconnect
     socket.on("manual_disconnect", (username) => {
