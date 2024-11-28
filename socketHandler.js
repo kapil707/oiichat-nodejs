@@ -117,7 +117,7 @@ function initializeSocket(io) {
     });
 
     // Handle message sending
-    socket.on("get_user_info", async ({ user_id }) => {
+    socket.on("get_user_info", async (user_id) => {
       console.log(`user id ${user_id}`);
       socket.emit('get_user_info_response', {
         status: 'online',
