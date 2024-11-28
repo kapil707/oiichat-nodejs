@@ -28,6 +28,7 @@ app.get("/",(req,res)=>{
 });*/
 
 //app.use(logReqRes('log.txt'));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.use("/api/user",userRouter);
 
