@@ -51,6 +51,14 @@ function initializeSocket(io) {
       insert_user_online_status(user1,"Online");
     });
 
+    //iss say user ki sari info ati ha
+    socket.on("user_info",async (user_id) => {
+      const user_dt = await userModel.findOne({ _id: user_id });
+      socket.emit('user_info_response', {
+        user_online_time: user_dt.user_online_time,
+      });
+    });
+
     // Handle manual disconnect
     socket.on("manual_disconnect", (username) => {
       console.log(`${username} manually disconnected.`);
