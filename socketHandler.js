@@ -49,9 +49,6 @@ function initializeSocket(io) {
       console.log(`${username} registered with socket ID: ${socket.id}`);
       //update online status
       insert_user_online_status(user1,"Online");
-
-      const status = "Online";
-      socket.emit("user_info_online_status", {user_id:username, status });
     });
 
     // Handle manual disconnect
@@ -59,9 +56,6 @@ function initializeSocket(io) {
       console.log(`${username} manually disconnected.`);
       delete users[username];
       insert_user_online_status(username,"offline");
-
-      const status = "offline";
-      socket.emit("user_info_online_status", { user_id:username, status });
     });
 
     // Disconnect user
@@ -120,6 +114,14 @@ function initializeSocket(io) {
         console.error("Error saving message:", error.message);
         socket.emit("error", { message: "Failed to save message in the database." });
       }
+    });
+
+    // Handle message sending
+    socket.on("get_user_info", async ({ user_id }) => {
+      socket.emit('get_user_info_response', {
+        status: 'online',
+        user_id: user_id
+      });
     });
   });
 }
