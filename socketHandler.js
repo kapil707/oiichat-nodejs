@@ -64,6 +64,9 @@ function initializeSocket(io) {
     socket.on("manual_disconnect", (username) => {
       console.log(`${username} manually disconnected.`);
       insert_user_online_status(username,"offline");
+      socket.emit('user_info_response', {
+        user_online_time: "oofline",
+      });
       delete users[username];
     });
 
