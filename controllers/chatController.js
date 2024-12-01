@@ -1,4 +1,4 @@
-const chatModel = require("./models/chatModel");
+const chatModel = require("../models/chatModel");
 const mongoose = require("mongoose");
 
 async function fetchOldMessages(req,res) {
@@ -32,6 +32,6 @@ async function fetchOldMessages(req,res) {
     }
   }
 
-  module.exports = {
+module.exports = {
     fetchOldMessages
 };
