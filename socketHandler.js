@@ -164,10 +164,10 @@ function initializeSocket(io) {
           },
         ]);
     
-        if (old_messages.length === 0) {
-          console.log("No messages found.");
-          return socket.emit("get_old_message_response", { messages: [] });
-        }
+        // if (old_messages.length === 0) {
+        //   console.log("No messages found.");
+        //   return socket.emit("get_old_message_response", { messages: [] });
+        // }
 
         //update message status
         //await chatModel.updateMany({ user2: user_id, status: 0 }, { $set: { status: 1 } });
