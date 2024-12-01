@@ -150,7 +150,7 @@ function initializeSocket(io) {
       const old_message = await chatModel.findOne({ user2: user_id });
 
       socket.emit('get_old_message_response', {
-        message: old_message.message
+        message: old_message
       });
 
     });
