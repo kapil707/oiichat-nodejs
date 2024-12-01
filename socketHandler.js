@@ -149,11 +149,11 @@ function initializeSocket(io) {
     
         const old_messages = await chatModel.aggregate([
           {
-            $match: { user2: user_id},
+            $match: { user2: mongoose.Types.ObjectId(user_id), },
           },
           {
             $lookup: {
-              from: "user",
+              from: "users",
               localField: "user1",
               foreignField: "_id",
               as: "user1_info",
