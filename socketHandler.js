@@ -144,16 +144,24 @@ function initializeSocket(io) {
 
     //get old message
     socket.on("get_old_message", async (user_id) => {
-
-      console.log("get_old_message call");
-
-      const old_message = await chatModel.findOne({ user2: user_id });
-
-      socket.emit('get_old_message_response', {
-        message: old_message
-      });
-
+      try {
+        console.log("get_old_message call");
+    
+        // Fetch all messages where user2 matches the given user_id
+        const old_messages = await chatModel.find({ user2: user_id });
+    
+        // Send the messages back to the client
+        socket.emit('get_old_message_response', {
+          messages: old_messages // Return all messages as an array
+        });
+    
+        console.log("get_old_message_response sent");
+      } catch (error) {
+        console.error("Error fetching old messages:", error.message);
+        socket.emit('error', { message: 'Failed to fetch old messages.' });
+      }
     });
+    
   });
 }
 
