@@ -148,7 +148,7 @@ function initializeSocket(io) {
         console.log("get_old_message call");
     
         // Fetch all messages where user2 matches the given user_id
-        const old_messages = await chatModel.find({ user2: user_id });
+        const old_messages = await chatModel.find({ user2: user_id,status:0 });
     
         // Send the messages back to the client
         socket.emit('get_old_message_response', {
