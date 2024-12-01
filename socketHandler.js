@@ -149,18 +149,18 @@ function initializeSocket(io) {
     
         const old_messages = await chatModel.aggregate([
           {
-            $match: { user2: user_id}, // Match messages for user2 with status 0
+            $match: { user2: user_id},
           },
           {
             $lookup: {
-              from: "users", // The name of the user collection in MongoDB
-              localField: "user1", // The field in chatModel to join on
-              foreignField: "_id", // The field in userModel to join with
-              as: "user1_info", // The field name for the joined data
+              from: "users",
+              localField: "user1",
+              foreignField: "_id",
+              as: "user1_info",
             },
           },
           {
-            $unwind: "$user1_info", // Unwind the array to get a flat structure
+            $unwind: "$user1_info",
           },
         ]);
     
