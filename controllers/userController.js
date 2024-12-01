@@ -107,7 +107,8 @@ async function loginUser(req,res) {
             users:{
                 user_id:user._id,
                 user_email:user.email,
-                user_name:user.name
+                user_name:user.name,
+                user_image:user.user_image,
             }
         });
       } catch (error) {
