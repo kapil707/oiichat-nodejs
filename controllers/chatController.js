@@ -19,13 +19,13 @@ async function fetchOldMessages(req,res) {
 
   const { user_id } = req.body; 
   console.log("Received user_id:", user_id);
-  console.log("Converted user_id:", mongoose.Types.ObjectId(user_id));
+  console.log("Converted user_id:", new mongoose.Types.ObjectId(user_id));
 
   try {
     const old_messages = await chatModel.aggregate([
       {
         $match: { 
-          user2: user_id, 
+          user2: new mongoose.Types.ObjectId(user_id), 
         },
       },
       {
