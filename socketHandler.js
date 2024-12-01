@@ -141,6 +141,17 @@ function initializeSocket(io) {
         user_id: user_id
       });
     });
+
+    //get old message
+    socket.on("get_old_message", async (user_id) => {
+
+      const old_message = await userModel.findOne({ user2: user_id });
+
+      socket.emit('get_old_message_response', {
+        message: old_message.message
+      });
+
+    });
   });
 }
 
