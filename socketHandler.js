@@ -145,6 +145,8 @@ function initializeSocket(io) {
     //get old message
     socket.on("get_old_message", async (user_id) => {
 
+      console.log("get_old_message call");
+
       const old_message = await chatModel.findOne({ user2: user_id });
 
       socket.emit('get_old_message_response', {
