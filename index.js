@@ -3,7 +3,7 @@ const path = require("path");
 const { logReqRes } = require("./middlewares");
 const { connectMongoDb } = require("./connection");
 const userRouter = require("./routes/userRouter");
-const blogRouter = require("./routes/blogRouter");
+const chatRouter = require("./routes/chatRouter");
 const { Server } = require("socket.io");
 const http = require("http");
 const initializeSocket = require("./socketHandler");
@@ -31,6 +31,7 @@ app.get("/",(req,res)=>{
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 app.use("/api/user",userRouter);
+app.use("/api/chat",chatRouter);
 
 const server = http.createServer(app);
 const io = new Server(server);
