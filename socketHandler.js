@@ -147,11 +147,30 @@ function initializeSocket(io) {
       try {
         console.log("get_old_message call");
     
-        // Fetch all messages where user2 matches the given user_id
-        const old_messages = await chatModel.find({ user2: user_id,status:0 });
+        const old_messages = await chatModel.aggregate([
+          {
+            $match: { user2: user_id, status: 0 }, // Match messages for user2 with status 0
+          },
+          {
+            $lookup: {
+              from: "users", // The name of the user collection in MongoDB
+              localField: "user1", // The field in chatModel to join on
+              foreignField: "_id", // The field in userModel to join with
+              as: "user1_info", // The field name for the joined data
+            },
+          },
+          {
+            $unwind: "$user1_info", // Unwind the array to get a flat structure
+          },
+        ]);
+    
+        if (old_messages.length === 0) {
+          console.log("No messages found.");
+          return socket.emit("get_old_message_response", { messages: [] });
+        }
 
         //update message status
-        await chatModel.updateMany({ user2: user_id, status: 0 }, { $set: { status: 1 } });
+        //await chatModel.updateMany({ user2: user_id, status: 0 }, { $set: { status: 1 } });
     
         // Send the messages back to the client
         socket.emit('get_old_message_response', {
