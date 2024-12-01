@@ -2,6 +2,7 @@ const chatModel = require("../models/chatModel");
 const mongoose = require("mongoose");
 
 async function fetchOldMessages(req,res) {
+  console.log("Old Messages call");
     try {
        const { user_id } = req.body;
       const old_messages = await chatModel.aggregate([
