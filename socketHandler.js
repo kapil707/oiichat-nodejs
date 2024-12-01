@@ -101,8 +101,8 @@ function initializeSocket(io) {
           });
           console.log(`user1_dt.user_image: ${user1_dt.user_image}`);
           // Update status to Delivered (1)
-          newMessage.status = 1;
-          await newMessage.save();
+          //newMessage.status = 1;
+          //await newMessage.save();
           //console.log(`receiveMessage: ${recipientSocketIds}`);
         } else {
           //jab user offline ha to
