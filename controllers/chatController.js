@@ -18,12 +18,24 @@ async function fetchOldMessages(req,res) {
   //   users});
 
   try {
+    const { user_id } = req.body;
     const old_messages = await chatModel.aggregate([
       {
         $match: { 
           user2: user_id, 
         },
-      }
+      },
+      {
+        $lookup: {
+          from: "users", // Ensure this matches your collection name
+          localField: "user1",
+          foreignField: "_id",
+          as: "user1_info",
+        },
+      },
+      {
+        $unwind: "$user1_info",
+      },
     ]);
 
     console.log("Old Messages with User Info:", old_messages);
