@@ -40,7 +40,7 @@ async function fetchOldMessages(req,res) {
 
     console.log("Old Messages with User Info:", old_messages);
 
-    return res.status(200).send({ old_messages });
+    return res.status(200).send({ old_messages:old_messages });
   } catch (error) {
     console.error("Error fetching messages:", error.message);
     return res.status(200).send({ error });
