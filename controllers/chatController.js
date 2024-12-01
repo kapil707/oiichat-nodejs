@@ -26,7 +26,7 @@ async function fetchOldMessages(req,res) {
       },
       {
         $lookup: {
-          from: "users", // Ensure this matches your collection name
+          from: "user", // Ensure this matches your collection name
           localField: "user1",
           foreignField: "_id",
           as: "user1_info",
