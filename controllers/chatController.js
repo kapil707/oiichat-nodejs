@@ -1,5 +1,6 @@
 const chatModel = require("../models/chatModel");
 const userModel = require("../models/userModel");
+const mongoose = require('mongoose');
 
 async function getAllUser(req,res) {
   const users = await userModel.find({});
@@ -20,8 +21,7 @@ async function fetchOldMessages(req,res) {
     const old_messages = await chatModel.aggregate([
       {
         $match: { 
-          user2: user_id, 
-          status: 0 
+          user2: mongoose.Types.ObjectId(user_id), 
         },
       },
       {
