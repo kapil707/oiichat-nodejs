@@ -21,12 +21,12 @@ async function fetchOldMessages(req,res) {
     const old_messages = await chatModel.aggregate([
       {
         $match: { 
-          user2: mongoose.Types.ObjectId(user_id), 
+          user2: user_id, 
         },
       },
       {
         $lookup: {
-          from: "user", // Ensure this matches your collection name
+          from: "users", // Ensure this matches your collection name
           localField: "user1",
           foreignField: "_id",
           as: "user1_info",
