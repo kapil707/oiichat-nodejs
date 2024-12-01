@@ -34,5 +34,5 @@ async function fetchOldMessages(req,res) {
   }
 
 module.exports = {
-    fetchOldMessages
+    fetchOldMessages,
 };
