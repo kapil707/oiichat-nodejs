@@ -33,6 +33,11 @@ async function fetchOldMessages(req,res) {
           foreignField: "_id",
           as: "user1_info",
         },
+      },{
+        $unwind: {
+          path: "$user1_info",
+          preserveNullAndEmptyArrays: true,
+        },
       },
     ]);
 
