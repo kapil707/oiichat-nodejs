@@ -17,8 +17,11 @@ async function fetchOldMessages(req,res) {
   //   message: 'data load successful!', 
   //   users});
 
+  const { user_id } = req.body; 
+  console.log("Received user_id:", user_id);
+  console.log("Converted user_id:", mongoose.Types.ObjectId(user_id));
+
   try {
-    const { user_id } = req.body;
     const old_messages = await chatModel.aggregate([
       {
         $match: { 
