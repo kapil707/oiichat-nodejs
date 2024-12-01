@@ -1,5 +1,13 @@
 const chatModel = require("../models/chatModel");
-const mongoose = require("mongoose");
+const userModel = require("../models/userModel");
+
+async function getAllUser(req,res) {
+  const users = await userModel.find({});
+  return res.status(200).send({ 
+      status: 1,
+      message: 'data load successful!', 
+      users});
+}
 
 async function fetchOldMessages(req,res) {
   console.log("Old Messages call");
@@ -8,7 +16,7 @@ async function fetchOldMessages(req,res) {
       const old_messages = await chatModel.aggregate([
         {
           $match: { 
-            user2: mongoose.Types.ObjectId(user_id), 
+            user2: user_id, 
             status: 0 
           },
         },
@@ -35,4 +43,5 @@ async function fetchOldMessages(req,res) {
 
 module.exports = {
     fetchOldMessages,
+    getAllUser
 };
