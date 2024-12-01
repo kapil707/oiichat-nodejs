@@ -153,7 +153,7 @@ function initializeSocket(io) {
           },
           {
             $lookup: {
-              from: "users",
+              from: "user",
               localField: "user1",
               foreignField: "_id",
               as: "user1_info",
