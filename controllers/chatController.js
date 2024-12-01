@@ -40,7 +40,7 @@ async function fetchOldMessages(req,res) {
 
     console.log("Old Messages with User Info:", old_messages);
 
-    return res.status(200).send({ old_messages:old_messages });
+    res.status(200).json({ success: true, messages: old_messages });
   } catch (error) {
     console.error("Error fetching messages:", error.message);
     res.status(500).json({ success: false, message: "Failed to fetch messages", error: error.message });
