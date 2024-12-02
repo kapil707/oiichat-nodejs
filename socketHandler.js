@@ -146,7 +146,7 @@ function initializeSocket(io) {
           {
             $match: { 
               user2: new mongoose.Types.ObjectId(user_id),
-              status:0
+              //status:0
             },
           },
           {
