@@ -28,15 +28,25 @@ async function fetchOldMessages(req,res) {
       },
       {
         $lookup: {
-          from: "users",
-          localField: "user1",
-          foreignField: "_id",
-          as: "user1_info",
+          from: "users", // The collection to join with
+          localField: "user1", // The local field to match
+          foreignField: "_id", // The foreign field to match
+          as: "user1_info", // The name of the output array
         },
-      },{
-        $unwind: {
-          path: "$user1_info",
-          preserveNullAndEmptyArrays: true,
+      },
+      {
+        $unwind: "$user1_info", // Deconstruct user1_info array into individual documents
+      },
+      {
+        $project: {
+          _id: 1, // Include the fields you need from the chatModel
+          user1: 1,
+          user2: 1,
+          message: 1,
+          status: 1,
+          timestamp: 1,
+          "user1_info.name": 1, // Include only the name from user1_info
+          "user1_info.user_image": 1, // Include only the profile_pic from user1_info
         },
       },
     ]);
