@@ -246,14 +246,15 @@ function initializeSocket(io) {
         }
       });
 
-      // Forward signaling messages
+      // Listen for signaling data and forward it to the target peer
       socket.on('signal', (data) => {
-        console.log("Forward signaling messages " + data.target +" -- " + socket.id);
-          io.to(data.target).emit('signal', {
-              signal: data.signal,
-              sender: socket.id,
-          });
-      });
+        const { target, signal } = data;
+        console.log(`Signal from ${socket.id} to ${target}:`, signal);
+        io.to(target).emit('signal', {
+            signal: signal,
+            sender: socket.id,
+        });
+    });
   });
 }
 
