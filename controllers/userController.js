@@ -43,11 +43,17 @@ async function profile_upload(req,res) {
     }
 
 async function getAllUser(req,res) {
-    const users = await userModel.find({});
-    return res.status(200).send({ 
-        status: 1,
-        message: 'data load successful!', 
-        users});
+    // const users = await userModel.find({});
+    // return res.status(200).send({ 
+    //     status: 1,
+    //     message: 'data load successful!', 
+    //     users});
+
+    const users = await userModel.find({}, '_id name user_image');
+    return res.status(200).send({
+      users,
+    }); 
+
 }
 
 // async function insertUser(req,res) {
