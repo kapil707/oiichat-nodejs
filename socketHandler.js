@@ -207,11 +207,14 @@ function initializeSocket(io) {
       // call only
      // Handle call request
       socket.on("call", ({ caller, callee }) => {
+        console.log("call");
         const calleeSocket = users[callee];
         if (calleeSocket) {
           io.to(calleeSocket).emit("incomingCall", { caller });
+          console.log("incomingCall");
         } else {
           io.to(users[caller]).emit("userUnavailable", { callee });
+          console.log("userUnavailable");
         }
       });
 
