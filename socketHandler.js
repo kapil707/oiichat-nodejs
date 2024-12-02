@@ -133,7 +133,9 @@ function initializeSocket(io) {
 
       socket.emit('get_user_info_response', {
         status: user_dt.user_online_time,
-        user_id: user_id
+        user_id: user_dt._id,
+        user_name: user_dt.name,
+        user_image: user_dt.user_image
       });
     });
 
