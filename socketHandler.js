@@ -177,8 +177,8 @@ function initializeSocket(io) {
               message: 1,
               status: 1,
               timestamp: 1,
-              "user1_info.name": 1, // Include only the name from user1_info
-              "user1_info.user_image": 1, // Include only the profile_pic from user1_info
+              user_name: "$user1_info.name",
+              user_image: "$user1_info.user_image", 
             },
           },
         ]);
