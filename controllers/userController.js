@@ -142,9 +142,21 @@ async function registerUser(req,res) {
       }
 }
 
+async function insert_user_online_status(user1,status) {
+  
+  const result = await userModel.findByIdAndUpdate(
+    user1, // User ID (_id)
+    { user_online_time: status }, // Update field
+    { new: true } // Option to return the updated document
+  );
+  
+  //console.log("Updated User:", result);
+}
+
 module.exports = {
     loginUser,
     registerUser,
     getAllUser,
-    profile_upload
+    profile_upload,
+    insert_user_online_status
 };

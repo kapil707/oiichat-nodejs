@@ -3,16 +3,8 @@ const userModel = require("./models/userModel");
 const admin = require("./firebase_token/firebase");
 const mongoose = require('mongoose');
 
-async function insert_user_online_status(user1,status) {
-  
-  const result = await userModel.findByIdAndUpdate(
-    user1, // User ID (_id)
-    { user_online_time: status }, // Update field
-    { new: true } // Option to return the updated document
-  );
-  
-  //console.log("Updated User:", result);
-}
+const {insert_user_online_status} = require("./controllers/userController");
+
 
 async function sendNotificationToDevice(token, title, body) {
   const message = {
@@ -79,12 +71,14 @@ function initializeSocket(io) {
     // Handle message sending
     socket.on("sendMessage", async ({ user1, user2, message, token,messageId }) => {
       try {
+        // insert new chat
         const newMessage = new chatModel({ 
           user1:new mongoose.Types.ObjectId(user1), 
           user2:new mongoose.Types.ObjectId(user2),
           message });
         await newMessage.save();
         
+        //status return dayta ha chatroom ko ki message sent hua kya nahi
         socket.emit('messageSent', {
           status: 'success',
           message: 'Message sent successfully',
@@ -94,7 +88,7 @@ function initializeSocket(io) {
 
         const recipientSocketIds = users[user2];
         if (recipientSocketIds) {
-          //jab user active ha
+          // jab user online ha or chat room me ha to oss ko osi time chat mil jati ha iss say
           const user1_dt = await userModel.findOne({ _id: user1 });
           io.to(recipientSocketIds).emit("receiveMessage", {
             user1, // The sender of the message
@@ -103,14 +97,11 @@ function initializeSocket(io) {
             user_name:user1_dt.name,
             user_image:user1_dt.user_image,
           });
-          console.log(`user1_dt.user_image: ${user1_dt.user_image}`);
-          // Update status to Delivered (1)
-          //newMessage.status = 1;
-          //await newMessage.save();
-          //console.log(`receiveMessage: ${recipientSocketIds}`);
+          //update hota ha ki message user ko recive ho gaya 
+          newMessage.status = 1;
+          await newMessage.save();
         } else {
-          //jab user offline ha to
-          //const userId = mongoose.Types.ObjectId(user2); // Convert string to ObjectId
+          //jab user online nahi ha to firebase say notification jata ha user ko 
           const user1_dt = await userModel.findOne({ _id: user1 });
           const user2_dt = await userModel.findOne({ _id: user2 });
           if(user1_dt && user2_dt){
@@ -125,7 +116,7 @@ function initializeSocket(io) {
       }
     });
 
-    // Handle message sending
+    // iss say user to user typing ka status jata ha
     socket.on("userTyping", async ({ user1, user2, status }) => {
         const recipientSocketIds = users[user2];
         if (recipientSocketIds) {
@@ -136,7 +127,7 @@ function initializeSocket(io) {
         }
     });
 
-    // Handle message sending
+    // jab chatroom open hota ha to user ka status yaha say pata chalta ha online yha offline
     socket.on("get_user_info", async (user_id) => {
       const user_dt = await userModel.findOne({ _id: user_id });
 
@@ -146,7 +137,7 @@ function initializeSocket(io) {
       });
     });
 
-    //get old message
+    //jab user app open karta ha to jo message os ke pass nahi aya yaha say aty ha sabhi unread message
     socket.on("get_old_message", async (user_id) => {
       try {
         console.log("get_old_message call");
@@ -188,7 +179,7 @@ function initializeSocket(io) {
           return socket.emit("get_old_message_response", { messages: [] });
         }
 
-        //update message status
+        //jab message user ke pass recive ho jata ha to status 1 ho jata ha 
         await chatModel.updateMany({ user2: user_id, status: 0 }, { $set: { status: 1 } });
     
         // Send the messages back to the client
