@@ -90,12 +90,16 @@ function initializeSocket(io) {
         if (recipientSocketIds) {
           // jab user online ha or chat room me ha to oss ko osi time chat mil jati ha iss say
           const user1_dt = await userModel.findOne({ _id: user1 });
+          var user_image = "";
+          if(user1_dt.user_image){
+            user_image = user1_dt.user_image;
+          }
           io.to(recipientSocketIds).emit("receiveMessage", {
             user1, // The sender of the message
             user2, // The recipient of the message
             message, // The content of the message
             user_name:user1_dt.name,
-            user_image:user1_dt.user_image,
+            user_image:user_image,
           });
           //update hota ha ki message user ko recive ho gaya 
           newMessage.status = 1;
@@ -132,9 +136,9 @@ function initializeSocket(io) {
       const user_dt = await userModel.findOne({ _id: user_id });
 
       var user_image = "";
-        if(user_dt.user_image){
-          user_image = user.user_image;
-        }
+      if(user_dt.user_image){
+        user_image = user_dt.user_image;
+      }
       socket.emit('get_user_info_response', {
         status: user_dt.user_online_time,
         user_id: user_dt._id,
