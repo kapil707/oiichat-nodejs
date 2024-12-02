@@ -205,35 +205,30 @@ function initializeSocket(io) {
     });
 
       // call only
-     // Send an offer from Caller to Receiver
-      socket.on("callUser", ({ to, offer }) => {
-        console.log("callUser");
-        const targetSocketId = users[to];
-        if (targetSocketId) {
-          io.to(targetSocketId).emit("incomingCall", { from: socket.id, offer });
+     // Handle call request
+      socket.on("call", ({ caller, callee }) => {
+        console.log("call");
+        const calleeSocket = users[callee];
+        if (calleeSocket) {
+          io.to(calleeSocket).emit("incomingCall", { caller });
           console.log("incomingCall");
+        } else {
+          io.to(users[caller]).emit("userUnavailable", { callee });
+          console.log("userUnavailable");
         }
       });
 
-      // Forward the answer from Receiver to Caller
-      socket.on("answerCall", ({ to, answer }) => {
-        console.log("answerCall");
-        const targetSocketId = users[to];
-        if (targetSocketId) {
-          io.to(targetSocketId).emit("callAnswered", { answer });
-          console.log("callAnswered");
-        }
-      });
-
-      // Forward ICE candidate to the other peer
+      // Handle ICE candidates
       socket.on("iceCandidate", ({ to, candidate }) => {
-        console.log("iceCandidate");
-        const targetSocketId = users[to];
-        if (targetSocketId) {
-          io.to(targetSocketId).emit("iceCandidate", { candidate });
-          console.log("iceCandidate");
+        console.log("ICE Candidate received from:", socket.id);
+        const targetSocket = users[to];
+        if (targetSocket) {
+          io.to(targetSocket).emit("iceCandidate", { candidate });
+          console.log("ICE Candidate sent to:", to);
+        } else {
+          console.log("Target user not found for ICE Candidate.");
         }
-      });    
+      });
   });
 }
 
