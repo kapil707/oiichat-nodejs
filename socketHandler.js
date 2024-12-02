@@ -89,7 +89,7 @@ function initializeSocket(io) {
         const recipientSocketIds = users[user2];
         if (recipientSocketIds) {
           // jab user online ha or chat room me ha to oss ko osi time chat mil jati ha iss say
-          const user1_dt = await userModel.findOne({ _id: user1 });
+          /*const user1_dt = await userModel.findOne({ _id: user1 });
           io.to(recipientSocketIds).emit("receiveMessage", {
             user1, // The sender of the message
             user2, // The recipient of the message
@@ -99,7 +99,7 @@ function initializeSocket(io) {
           });
           //update hota ha ki message user ko recive ho gaya 
           newMessage.status = 1;
-          await newMessage.save();
+          await newMessage.save();*/
         } else {
           //jab user online nahi ha to firebase say notification jata ha user ko 
           const user1_dt = await userModel.findOne({ _id: user1 });
@@ -146,7 +146,7 @@ function initializeSocket(io) {
           {
             $match: { 
               user2: new mongoose.Types.ObjectId(user_id),
-              //status:0
+              status:0
             },
           },
           {
