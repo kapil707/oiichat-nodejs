@@ -245,6 +245,14 @@ function initializeSocket(io) {
           console.log("Target user not found for ICE Candidate.");
         }
       });
+
+      // Forward signaling messages
+      socket.on('signal', (data) => {
+          io.to(data.target).emit('signal', {
+              signal: data.signal,
+              sender: socket.id,
+          });
+      });
   });
 }
 
