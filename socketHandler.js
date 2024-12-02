@@ -203,7 +203,22 @@ function initializeSocket(io) {
         socket.emit('error', { message: 'Failed to fetch old messages.' });
       }
     });
-    
+
+    // call only
+    // Send offer
+      socket.on("offer", (data) => {
+        socket.to(data.to).emit("offer", data);
+      });
+
+      // Send answer
+      socket.on("answer", (data) => {
+        socket.to(data.to).emit("answer", data);
+      });
+
+      // Send ICE candidates
+      socket.on("ice-candidate", (data) => {
+        socket.to(data.to).emit("ice-candidate", data);
+      });    
   });
 }
 
