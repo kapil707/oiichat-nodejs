@@ -131,11 +131,15 @@ function initializeSocket(io) {
     socket.on("get_user_info", async (user_id) => {
       const user_dt = await userModel.findOne({ _id: user_id });
 
+      var user_image = "";
+        if(user_dt.user_image){
+          user_image = user.user_image;
+        }
       socket.emit('get_user_info_response', {
         status: user_dt.user_online_time,
         user_id: user_dt._id,
         user_name: user_dt.name,
-        user_image: user_dt.user_image
+        user_image: user_image
       });
     });
 
