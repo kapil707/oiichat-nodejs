@@ -205,30 +205,27 @@ function initializeSocket(io) {
     });
 
       // call only
-     // Handle call request
-      socket.on("call", ({ caller, callee }) => {
-        console.log("call");
-        const calleeSocket = users[callee];
-        if (calleeSocket) {
-          io.to(calleeSocket).emit("incomingCall", { caller });
-          console.log("incomingCall");
-        } else {
-          io.to(users[caller]).emit("userUnavailable", { callee });
-          console.log("userUnavailable");
+     // Send an offer from Caller to Receiver
+      socket.on("callUser", ({ to, offer }) => {
+        const targetSocketId = users[to];
+        if (targetSocketId) {
+          io.to(targetSocketId).emit("incomingCall", { from: socket.id, offer });
         }
       });
 
-      // Handle call response
-      socket.on("callResponse", ({ caller, callee, accepted }) => {
-        console.log("callResponse");
-        if (accepted) {
-          const callerSocket = users[caller];
-          io.to(callerSocket).emit("callAccepted", { callee });
-          console.log("callAccepted");
-        } else {
-          const callerSocket = users[caller];
-          io.to(callerSocket).emit("callRejected", { callee });
-          console.log("callRejected");
+      // Forward the answer from Receiver to Caller
+      socket.on("answerCall", ({ to, answer }) => {
+        const targetSocketId = users[to];
+        if (targetSocketId) {
+          io.to(targetSocketId).emit("callAnswered", { answer });
+        }
+      });
+
+      // Forward ICE candidate to the other peer
+      socket.on("iceCandidate", ({ to, candidate }) => {
+        const targetSocketId = users[to];
+        if (targetSocketId) {
+          io.to(targetSocketId).emit("iceCandidate", { candidate });
         }
       });    
   });
