@@ -204,20 +204,26 @@ function initializeSocket(io) {
       }
     });
 
-    // call only
-    // Send offer
-      socket.on("offer", (data) => {
-        socket.to(data.to).emit("offer", data);
+      // call only
+     // Handle call request
+      socket.on("call", ({ caller, callee }) => {
+        const calleeSocket = users[callee];
+        if (calleeSocket) {
+          io.to(calleeSocket).emit("incomingCall", { caller });
+        } else {
+          io.to(users[caller]).emit("userUnavailable", { callee });
+        }
       });
 
-      // Send answer
-      socket.on("answer", (data) => {
-        socket.to(data.to).emit("answer", data);
-      });
-
-      // Send ICE candidates
-      socket.on("ice-candidate", (data) => {
-        socket.to(data.to).emit("ice-candidate", data);
+      // Handle call response
+      socket.on("callResponse", ({ caller, callee, accepted }) => {
+        if (accepted) {
+          const callerSocket = users[caller];
+          io.to(callerSocket).emit("callAccepted", { callee });
+        } else {
+          const callerSocket = users[caller];
+          io.to(callerSocket).emit("callRejected", { callee });
+        }
       });    
   });
 }
