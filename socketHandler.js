@@ -220,12 +220,15 @@ function initializeSocket(io) {
 
       // Handle call response
       socket.on("callResponse", ({ caller, callee, accepted }) => {
+        console.log("callResponse");
         if (accepted) {
           const callerSocket = users[caller];
           io.to(callerSocket).emit("callAccepted", { callee });
+          console.log("callAccepted");
         } else {
           const callerSocket = users[caller];
           io.to(callerSocket).emit("callRejected", { callee });
+          console.log("callRejected");
         }
       });    
   });
