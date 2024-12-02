@@ -24,7 +24,7 @@ async function fetchOldMessages(req,res) {
   try {
     const old_messages = await chatModel.aggregate([
       {
-        $match: { user2: user_id},
+        $match: { user2: user_id },
       },
       {
         $lookup: {
@@ -36,6 +36,7 @@ async function fetchOldMessages(req,res) {
       },{
         $unwind: {
           path: "$user1_info",
+          preserveNullAndEmptyArrays: true,
         },
       },
     ]);

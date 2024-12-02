@@ -1,6 +1,7 @@
 const chatModel = require("./models/chatModel");
 const userModel = require("./models/userModel");
-const admin = require("./firebase_token/firebase"); // Import initialized Firebase Admin
+const admin = require("./firebase_token/firebase");
+const mongoose = require('mongoose');
 
 async function insert_user_online_status(user1,status) {
   
@@ -78,7 +79,10 @@ function initializeSocket(io) {
     // Handle message sending
     socket.on("sendMessage", async ({ user1, user2, message, token,messageId }) => {
       try {
-        const newMessage = new chatModel({ user1, user2, message });
+        const newMessage = new chatModel({ 
+          user1:new mongoose.Types.ObjectId(user1), 
+          user2:new mongoose.Types.ObjectId(user2),
+          message });
         await newMessage.save();
         
         socket.emit('messageSent', {
