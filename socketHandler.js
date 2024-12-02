@@ -80,8 +80,8 @@ function initializeSocket(io) {
     socket.on("sendMessage", async ({ user1, user2, message, token,messageId }) => {
       try {
         const newMessage = new chatModel({ 
-          user1:mongoose.Types.ObjectId(user1), 
-          user2:mongoose.Types.ObjectId(user2),
+          user1:new mongoose.Types.ObjectId(user1), 
+          user2:new mongoose.Types.ObjectId(user2),
           message });
         await newMessage.save();
         
