@@ -36,7 +36,6 @@ async function fetchOldMessages(req,res) {
       },{
         $unwind: {
           path: "$user1_info",
-          preserveNullAndEmptyArrays: true,
         },
       },
     ]);
