@@ -111,7 +111,7 @@ async function loginUser(req,res) {
     
         var user_image = "";
         if(user.user_image){
-          user_image =user.user_image;
+          user_image = user.user_image;
         }
         res.status(200).send({ 
             status: 1,
