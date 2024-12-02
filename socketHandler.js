@@ -248,6 +248,7 @@ function initializeSocket(io) {
 
       // Forward signaling messages
       socket.on('signal', (data) => {
+        console.log("Forward signaling messages " + data.signal +" -- " + socket.id);
           io.to(data.target).emit('signal', {
               signal: data.signal,
               sender: socket.id,
