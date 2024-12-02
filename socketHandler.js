@@ -218,6 +218,22 @@ function initializeSocket(io) {
         }
       });
 
+      // Handle offer
+      socket.on("offer", ({ to, sdp }) => {
+        const targetSocket = users[to];
+        if (targetSocket) {
+          io.to(targetSocket).emit("offer", { sdp });
+        }
+      });
+
+      // Handle answer
+      socket.on("answer", ({ to, sdp }) => {
+        const targetSocket = users[to];
+        if (targetSocket) {
+          io.to(targetSocket).emit("answer", { sdp });
+        }
+      });
+
       // Handle ICE candidates
       socket.on("iceCandidate", ({ to, candidate }) => {
         console.log("ICE Candidate received from:", socket.id);
