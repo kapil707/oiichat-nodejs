@@ -153,7 +153,10 @@ function initializeSocket(io) {
     
         const old_messages = await chatModel.aggregate([
           {
-            $match: { user2: new mongoose.Types.ObjectId(user_id) },
+            $match: { 
+              user2: new mongoose.Types.ObjectId(user_id),
+              status:0
+            },
           },
           {
             $lookup: {
@@ -186,7 +189,7 @@ function initializeSocket(io) {
         }
 
         //update message status
-        //await chatModel.updateMany({ user2: user_id, status: 0 }, { $set: { status: 1 } });
+        await chatModel.updateMany({ user2: user_id, status: 0 }, { $set: { status: 1 } });
     
         // Send the messages back to the client
         socket.emit('get_old_message_response', {
