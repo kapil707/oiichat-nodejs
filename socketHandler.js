@@ -207,25 +207,31 @@ function initializeSocket(io) {
       // call only
      // Send an offer from Caller to Receiver
       socket.on("callUser", ({ to, offer }) => {
+        console.log("callUser");
         const targetSocketId = users[to];
         if (targetSocketId) {
           io.to(targetSocketId).emit("incomingCall", { from: socket.id, offer });
+          console.log("incomingCall");
         }
       });
 
       // Forward the answer from Receiver to Caller
       socket.on("answerCall", ({ to, answer }) => {
+        console.log("answerCall");
         const targetSocketId = users[to];
         if (targetSocketId) {
           io.to(targetSocketId).emit("callAnswered", { answer });
+          console.log("callAnswered");
         }
       });
 
       // Forward ICE candidate to the other peer
       socket.on("iceCandidate", ({ to, candidate }) => {
+        console.log("iceCandidate");
         const targetSocketId = users[to];
         if (targetSocketId) {
           io.to(targetSocketId).emit("iceCandidate", { candidate });
+          console.log("iceCandidate");
         }
       });    
   });
