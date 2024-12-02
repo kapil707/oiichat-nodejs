@@ -153,25 +153,37 @@ function initializeSocket(io) {
     
         const old_messages = await chatModel.aggregate([
           {
-            $match: { user2: mongoose.Types.ObjectId(user_id), },
+            $match: { user2: new mongoose.Types.ObjectId(user_id) },
           },
           {
             $lookup: {
-              from: "users",
-              localField: "user1",
-              foreignField: "_id",
-              as: "user1_info",
+              from: "users", // The collection to join with
+              localField: "user1", // The local field to match
+              foreignField: "_id", // The foreign field to match
+              as: "user1_info", // The name of the output array
             },
           },
           {
-            $unwind: "$user1_info",
+            $unwind: "$user1_info", // Deconstruct user1_info array into individual documents
+          },
+          {
+            $project: {
+              _id: 1, // Include the fields you need from the chatModel
+              user1: 1,
+              user2: 1,
+              message: 1,
+              status: 1,
+              timestamp: 1,
+              "user1_info.name": 1, // Include only the name from user1_info
+              "user1_info.user_image": 1, // Include only the profile_pic from user1_info
+            },
           },
         ]);
     
-        // if (old_messages.length === 0) {
-        //   console.log("No messages found.");
-        //   return socket.emit("get_old_message_response", { messages: [] });
-        // }
+        if (old_messages.length === 0) {
+          console.log("No messages found.");
+          return socket.emit("get_old_message_response", { messages: [] });
+        }
 
         //update message status
         //await chatModel.updateMany({ user2: user_id, status: 0 }, { $set: { status: 1 } });
