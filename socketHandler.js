@@ -247,13 +247,17 @@ function initializeSocket(io) {
       });
 
       // Listen for signaling data and forward it to the target peer
+      // Forward signaling data
       socket.on('signal', (data) => {
         const { target, signal } = data;
-        console.log(`Signal from ${socket.id} to ${target}:`, signal);
-        io.to(target).emit('signal', {
-            signal: signal,
-            sender: socket.id,
-        });
+        if (target && users[target]) {
+            io.to(target).emit('signal', {
+                signal: signal,
+                sender: socket.id,
+            });
+        } else {
+            console.log('Target not found:', target);
+        }
     });
   });
 }
