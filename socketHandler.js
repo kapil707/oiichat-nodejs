@@ -250,7 +250,7 @@ function initializeSocket(io) {
       // Handle signaling data
       socket.on('signal', (data) => {
         const {your_id, target, signal } = data;
-        if (target && users[target]) {
+        if (target) {
             console.log(`Signal from ${users[your_id]} to ${users[your_id]}`);
             io.to(target).emit('signal', { signal, sender: users[user1] });
         } else {
