@@ -53,7 +53,7 @@ function initializeSocket(io) {
     socket.on("manual_disconnect", (username) => {
       console.log(`${username} manually disconnected.`);
       delete users[username];
-      insert_user_online_status(username,"offline");
+      //insert_user_online_status(username,"offline");
     });
 
     // Disconnect user
@@ -62,7 +62,7 @@ function initializeSocket(io) {
         if (socketId === socket.id) {
           delete users[username];
           console.log(`${username} disconnected`);
-          insert_user_online_status(username,"offline");
+          //insert_user_online_status(username,"offline");
           break;
         }
       }
