@@ -252,7 +252,7 @@ function initializeSocket(io) {
         const {your_id, target, signal } = data;
         if (target) {
             console.log(`Signal from ${users[your_id]} to ${users[your_id]}`);
-            io.to(target).emit('signal', { signal, sender: users[user1] });
+            io.to(target).emit('signal', { signal, sender: users[your_id] });
         } else {
             console.log(`Target not found: ${target}`);
         }
