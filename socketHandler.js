@@ -254,7 +254,7 @@ function initializeSocket(io) {
             console.log(`Signal from ${users[user1]} to ${users[user2]}`);
             io.to(users[user2]).emit('signal', { signal, sender: users[user1] });
         } else {
-            console.log(`Target not found: ${target}`);
+            console.log(`Target not found: ${user2}`);
         }
     });
 
