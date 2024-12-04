@@ -41,12 +41,12 @@ function initializeSocket(io) {
       users[username] = socket.id; // Map username to socket ID
       console.log(`${username} registered with socket ID: ${socket.id}`);
       //update online status
-      insert_user_online_status(user1,"Online");
+      /*insert_user_online_status(user1,"Online");
 
       socket.emit('get_user_info_response', {
         status: "Online",
         user_id: user1
-      });
+      });*/
     });
 
     // Handle manual disconnect
