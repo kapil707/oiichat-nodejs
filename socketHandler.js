@@ -262,7 +262,7 @@ function initializeSocket(io) {
       console.log(`${user2} get_user_2_socket_id`);
       const recipientSocketIds = users[user2];
       socket.emit('get_user_2_socket_id_response', {
-        recipientSocketIds
+        user2:recipientSocketIds
       });
     });
   });
