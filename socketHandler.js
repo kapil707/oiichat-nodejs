@@ -41,19 +41,19 @@ function initializeSocket(io) {
       users[username] = socket.id; // Map username to socket ID
       console.log(`${username} registered with socket ID: ${socket.id}`);
       //update online status
-      /*insert_user_online_status(user1,"Online");
+      insert_user_online_status(user1,"Online");
 
       socket.emit('get_user_info_response', {
         status: "Online",
         user_id: user1
-      });*/
+      });
     });
 
     // Handle manual disconnect
     socket.on("manual_disconnect", (username) => {
       console.log(`${username} manually disconnected.`);
       delete users[username];
-      //insert_user_online_status(username,"offline");
+      insert_user_online_status(username,"offline");
     });
 
     // Disconnect user
@@ -62,7 +62,7 @@ function initializeSocket(io) {
         if (socketId === socket.id) {
           delete users[username];
           console.log(`${username} disconnected`);
-          //insert_user_online_status(username,"offline");
+          insert_user_online_status(username,"offline");
           break;
         }
       }
@@ -251,7 +251,7 @@ function initializeSocket(io) {
       socket.on('signal', (data) => {
         const {your_id, target, signal } = data;
         if (target) {
-            console.log(`Signal from ${users[your_id]} to ${users[your_id]}`);
+            console.log(`Signal from ${users[your_id]} to ${target}`);
             io.to(target).emit('signal', { signal, sender: users[your_id] });
         } else {
             console.log(`Target not found: ${target}`);
