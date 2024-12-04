@@ -251,8 +251,8 @@ function initializeSocket(io) {
       socket.on('signal', (data) => {
         const { target, signal } = data;
         if (target && users[target]) {
-            console.log(`Signal from ${socket.id} to ${target}`);
-            io.to(target).emit('signal', { signal, sender: socket.id });
+            console.log(`Signal from ${socket.id} to ${users[target]}`);
+            io.to(users[target]).emit('signal', { signal, sender: socket.id });
         } else {
             console.log(`Target not found: ${target}`);
         }
