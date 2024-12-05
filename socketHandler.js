@@ -205,48 +205,6 @@ function initializeSocket(io) {
     });
 
       // call only
-     // Handle call request
-      socket.on("call", ({ caller, callee }) => {
-        console.log("call");
-        const calleeSocket = users[callee];
-        if (calleeSocket) {
-          io.to(calleeSocket).emit("incomingCall", { caller });
-          console.log("incomingCall");
-        } else {
-          io.to(users[caller]).emit("userUnavailable", { callee });
-          console.log("userUnavailable");
-        }
-      });
-
-      // Handle offer
-      socket.on("offer", ({ to, sdp }) => {
-        const targetSocket = users[to];
-        if (targetSocket) {
-          io.to(targetSocket).emit("offer", { sdp });
-        }
-      });
-
-      // Handle answer
-      socket.on("answer", ({ to, sdp }) => {
-        const targetSocket = users[to];
-        if (targetSocket) {
-          io.to(targetSocket).emit("answer", { sdp });
-        }
-      });
-      
-
-      // Handle ICE candidates
-      socket.on("iceCandidate", ({ to, candidate }) => {
-        console.log("ICE Candidate received from:", socket.id);
-        const targetSocket = users[to];
-        if (targetSocket) {
-          io.to(targetSocket).emit("iceCandidate", { candidate });
-          console.log("ICE Candidate sent to:", to);
-        } else {
-          console.log("Target user not found for ICE Candidate.");
-        }
-      });
-
       // Listen for signaling data and forward it to the target peer
       // Handle signaling data
       socket.on('signal', (data) => {
