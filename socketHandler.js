@@ -233,9 +233,9 @@ function initializeSocket(io) {
           io.to(targetSocket).emit("answer", { sdp });
         }
       });
-      
 
-      // Handle ICE candidates
+
+      // Handle ICE candidates  
       socket.on("iceCandidate", ({ to, candidate }) => {
         console.log("ICE Candidate received from:", socket.id);
         const targetSocket = users[to];
