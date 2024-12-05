@@ -1,51 +1,71 @@
-const express = require('express');
-const http = require('http');
-const { Server } = require('socket.io');
+const express = require("express");
+const http = require("http");
+const { Server } = require("socket.io");
 
-// Initialize Express app and HTTP server
 const app = express();
 const server = http.createServer(app);
-const io = new Server(server);
-
-// Store connected users
-const users = {};
-
-// Serve a basic HTML page for testing (optional)
-app.get('/', (req, res) => {
-    res.send('<h1>WebRTC Signaling Server</h1>');
+const io = new Server(server, {
+  cors: {
+    origin: "*", // Allow any origin for simplicity
+    methods: ["GET", "POST"],
+  },
 });
 
-// WebSocket connection handling
-io.on('connection', (socket) => {
-    console.log('User connected:', socket.id);
+const users = {}; // Map of userId -> socketId
 
-    // Add the user to the list
-    users[socket.id] = socket.id;
+io.on("connection", (socket) => {
+  console.log(`User connected: ${socket.id}`);
 
-    // Notify other users about the new connection
-    socket.broadcast.emit('user-connected', socket.id);
+  // Register user
+  socket.on("register", (userId) => {
+    users[userId] = socket.id;
+    console.log(`User registered: ${userId}`);
+  });
 
-    // Handle signaling data
-    socket.on('signal', (data) => {
-        const { target, signal } = data;
-        if (target && users[target]) {
-            console.log(`Signal from ${socket.id} to ${target}`);
-            io.to(target).emit('signal', { signal, sender: socket.id });
-        } else {
-            console.log(`Target not found: ${target}`);
-        }
-    });
+  // Handle call initiation
+  socket.on("call", ({ from, to }) => {
+    const calleeSocket = users[to];
+    if (calleeSocket) {
+      io.to(calleeSocket).emit("incomingCall", { from });
+    }
+  });
 
-    // Remove the user when they disconnect
-    socket.on('disconnect', () => {
-        console.log('User disconnected:', socket.id);
-        delete users[socket.id];
-        socket.broadcast.emit('user-disconnected', socket.id);
-    });
+  // Handle offer
+  socket.on("offer", ({ to, sdp }) => {
+    const calleeSocket = users[to];
+    if (calleeSocket) {
+      io.to(calleeSocket).emit("offer", { from: socket.id, sdp });
+    }
+  });
+
+  // Handle answer
+  socket.on("answer", ({ to, sdp }) => {
+    const callerSocket = users[to];
+    if (callerSocket) {
+      io.to(callerSocket).emit("answer", { sdp });
+    }
+  });
+
+  // Handle ICE candidates
+  socket.on("iceCandidate", ({ to, candidate }) => {
+    const targetSocket = users[to];
+    if (targetSocket) {
+      io.to(targetSocket).emit("iceCandidate", { candidate });
+    }
+  });
+
+  // Handle disconnect
+  socket.on("disconnect", () => {
+    for (const [userId, socketId] of Object.entries(users)) {
+      if (socketId === socket.id) {
+        delete users[userId];
+        console.log(`User disconnected: ${userId}`);
+        break;
+      }
+    }
+  });
 });
 
-// Start the server
-const PORT = 3000;
-server.listen(PORT, () => {
-    console.log(`Signaling server is running on http://localhost:${PORT}`);
+server.listen(3000, () => {
+  console.log("Signaling server is running on port 3000");
 });
