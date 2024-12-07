@@ -109,7 +109,7 @@ async function loginUser(req,res) {
           expiresIn: '1h',
         });*/
     
-        var user_image = "default.png";
+        user_image = "default.png";
         if(user.user_image){
           user_image = user.user_image;
         }
@@ -154,7 +154,7 @@ async function registerUserOrLoginUser(req,res) {
       { $set: { firebase_token: firebase_token } } // Update Firebase token
     );
 
-    var user_image = "default.png";
+    user_image = "default.png";
     if(user.user_image){
       user_image = user.user_image;
     }
