@@ -19,7 +19,6 @@ const userSchema = new mongoose.Schema({
         unique: true, // Email will be unique
     },password:{
         type:String,
-        required:true,
     },user_image:{
         type:String,
     },firebase_token:{
