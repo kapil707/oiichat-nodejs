@@ -134,7 +134,7 @@ async function registerUserOrLoginUser(req,res) {
     const newuser = await userModel.findOne({ email });
     if (!newuser) {
       //jab user nahi h to oss ko database me add kr dayga
-      const user = new userModel({
+      const user1 = new userModel({
         uid,
         type,
         name,
@@ -142,7 +142,7 @@ async function registerUserOrLoginUser(req,res) {
         password,
         user_image
       });
-      await user.save();
+      await user1.save();
     }
 
     // yha login ke liya use ata ha
