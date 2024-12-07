@@ -130,7 +130,7 @@ async function loginUser(req,res) {
 
 async function registerUserOrLoginUser(req, res) {
   try {
-    const { uid, type, name, email, password, user_image, firebase_token } = req.body;
+    const { uid, type, name, email, user_image, firebase_token } = req.body;
 
     // Check if the user already exists
     let user = await userModel.findOne({ email });
@@ -142,7 +142,6 @@ async function registerUserOrLoginUser(req, res) {
         type,
         name,
         email,
-        password,
         user_image: user_image || "default.png", // Use default image if not provided
       });
       await user.save();
