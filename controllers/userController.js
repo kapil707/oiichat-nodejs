@@ -128,51 +128,53 @@ async function loginUser(req,res) {
       }
 }
 
-async function registerUserOrLoginUser(req,res) {
-  try{
-    const { uid,type,name,email,password,user_image,firebase_token } = req.body;
-    const newuser = await userModel.findOne({ email });
-    if (!newuser) {
-      //jab user nahi h to oss ko database me add kr dayga
-      const user1 = new userModel({
+async function registerUserOrLoginUser(req, res) {
+  try {
+    const { uid, type, name, email, password, user_image, firebase_token } = req.body;
+
+    // Check if the user already exists
+    let user = await userModel.findOne({ email });
+
+    if (!user) {
+      // If the user doesn't exist, create a new user
+      user = new userModel({
         uid,
         type,
         name,
         email,
         password,
-        user_image
+        user_image: user_image || "default.png", // Use default image if not provided
       });
-      await user1.save();
+      await user.save();
     }
 
-    // yha login ke liya use ata ha
-    const user = await userModel.findOne({ email });
-
-    // Update the user's Firebase token in the database
+    // Update the user's Firebase token
     await userModel.updateOne(
       { email }, // Find user by email
       { $set: { firebase_token: firebase_token } } // Update Firebase token
     );
 
-    user_image = "default.png";
-    if(user.user_image){
-      user_image = user.user_image;
-    }
-    res.status(200).send({ 
-        status: 1,
-        message: 'Login successful!', 
-        users:{
-            user_id:user._id,
-            user_email:user.email,
-            user_name:user.name,
-            user_image:user_image,
-        }
-    });
+    // Ensure `user_image` has a fallback
+    const finalUserImage = user.user_image || "default.png";
 
+    // Send response
+    res.status(200).send({
+      status: 1,
+      message: "Login successful!",
+      users: {
+        user_id: user._id,
+        user_email: user.email,
+        user_name: user.name,
+        user_image: finalUserImage,
+      },
+    });
   } catch (error) {
-    res.status(201).send({ 
-        status:0,
-        message: 'this email id already exists!' 
+    console.error("Error in registerUserOrLoginUser:", error.message);
+
+    res.status(500).send({
+      status: 0,
+      message: "An error occurred. Please try again!",
+      error: error.message, // Optional: Send error details for debugging
     });
   }
 }
