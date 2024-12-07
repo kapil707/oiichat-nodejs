@@ -130,15 +130,16 @@ async function loginUser(req,res) {
 
 async function registerUserOrLoginUser(req,res) {
   try{
-    const { name, email, password,type,user_image,firebase_token } = req.body;
+    const { uid,type,name,email,password,user_image,firebase_token } = req.body;
     const newuser = await userModel.findOne({ email });
     if (!newuser) {
       //jab user nahi h to oss ko database me add kr dayga
       const user = new userModel({
+        uid,
+        type,
         name,
         email,
         password,
-        type,
         user_image
       });
       await user.save();
