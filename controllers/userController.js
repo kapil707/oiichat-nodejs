@@ -109,7 +109,7 @@ async function loginUser(req,res) {
           expiresIn: '1h',
         });*/
     
-        var user_image = "";
+        var user_image = "default.png";
         if(user.user_image){
           user_image = user.user_image;
         }
@@ -126,6 +126,54 @@ async function loginUser(req,res) {
       } catch (error) {
         res.status(500).send({ error: error.message });
       }
+}
+
+async function registerUserOrLoginUser(req,res) {
+  try{
+    const { name, email, password,type,user_image,firebase_token } = req.body;
+    const newuser = await userModel.findOne({ email });
+    if (!newuser) {
+      //jab user nahi h to oss ko database me add kr dayga
+      const user = new userModel({
+        name,
+        email,
+        password,
+        type,
+        user_image
+      });
+      await user.save();
+    }
+
+    // yha login ke liya use ata ha
+    const user = await userModel.findOne({ email });
+
+    // Update the user's Firebase token in the database
+    await userModel.updateOne(
+      { email }, // Find user by email
+      { $set: { firebase_token: firebase_token } } // Update Firebase token
+    );
+
+    var user_image = "default.png";
+    if(user.user_image){
+      user_image = user.user_image;
+    }
+    res.status(200).send({ 
+        status: 1,
+        message: 'Login successful!', 
+        users:{
+            user_id:user._id,
+            user_email:user.email,
+            user_name:user.name,
+            user_image:user_image,
+        }
+    });
+
+  } catch (error) {
+    res.status(201).send({ 
+        status:0,
+        message: 'this email id already exists!' 
+    });
+  }
 }
 
 async function registerUser(req,res) {
@@ -170,5 +218,6 @@ module.exports = {
     registerUser,
     getAllUser,
     profile_upload,
-    insert_user_online_status
+    insert_user_online_status,
+    registerUserOrLoginUser
 };

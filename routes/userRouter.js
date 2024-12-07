@@ -1,5 +1,5 @@
 const express = require("express");
-const {loginUser,registerUser,getAllUser,profile_upload} = require("../controllers/userController");
+const {loginUser,registerUser,getAllUser,profile_upload,registerUserOrLoginUser} = require("../controllers/userController");
 const upload = require("../middlewares/multer");
 
 const router = express.Router();
@@ -23,6 +23,7 @@ router.route("/login").post(loginUser);
 router.route("/register").post(registerUser);
 router.route("/alluser").post(getAllUser);
 router.route("/profile_upload").post(upload.single("profileImage"), profile_upload);
+router.route("/registerUserOrLoginUser").post(registerUserOrLoginUser);
 
 
 // router.route("/").get(getAllUser).post(insertUser);
