@@ -12,7 +12,7 @@ const app = express();
 const PORT = 8000;
 
 //Connection
-connectMongoDb("mongodb://127.0.0.1:27017/kapil_db")
+connectMongoDb("mongodb://127.0.0.1:27017/oiichat_db")
 .then(()=>console.log("MongoDb Connected"))
 .catch((err) =>console.log("MongoDb Error",err));
 
