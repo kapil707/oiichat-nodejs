@@ -225,6 +225,16 @@ function initializeSocket(io) {
           console.log(`Signal from ${users[user1]} to ${user2}`);
           io.to(user2).emit('incoming_call', { signal, sender: users[user1] });
       } else {
+          console.log(`user2 not found: ${user2}`);
+      }
+    });
+
+    socket.on('incoming_call_answer', (data) => {
+      const {user1, target, signal } = data;
+      if (target) {
+          console.log(`Signal from ${users[user1]} to ${target}`);
+          io.to(target).emit('incoming_call_answer_done', { signal, sender: users[user1] });
+      } else {
           console.log(`user2 not found: ${target}`);
       }
     });
