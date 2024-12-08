@@ -230,6 +230,7 @@ function initializeSocket(io) {
     });
 
     socket.on('incoming_call_answer', (data) => {
+      console.log('incoming_call_answer');
       const {user1, target, signal } = data;
       if (target) {
           console.log(`incoming_call_answer from ${users[user1]} to ${target}`);
