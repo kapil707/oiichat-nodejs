@@ -222,8 +222,8 @@ function initializeSocket(io) {
     socket.on('calling', (data) => {
       const {user1, user2, signal } = data;
       if (user2) {
-          console.log(`Signal from ${users[user1]} to ${user2}`);
-          io.to(user2).emit('incoming_call', { signal, sender: users[user1] });
+          console.log(`Signal from ${user1} to ${user2}`);
+          io.to(user2).emit('incoming_call', { signal, sender: user1 });
       } else {
           console.log(`user2 not found: ${target}`);
       }
