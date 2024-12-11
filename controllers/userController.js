@@ -192,14 +192,14 @@ async function registerUser(req,res) {
         });
     
         await user.save();
-        res.status(201).send({ 
+        res.status(200).send({ 
             status:1,
             message: 'User registered successfully!' 
         });
       } catch (error) {
         res.status(201).send({ 
             status:0,
-            message: 'this email id already exists!' 
+            message: 'this email id already exists!' + error
         });
       }
 }
