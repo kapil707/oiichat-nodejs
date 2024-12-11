@@ -180,12 +180,13 @@ async function registerUserOrLoginUser(req, res) {
 
 async function registerUser(req,res) {
     try {
-        const { name, email, password } = req.body;
+        const { name, email, password,uid } = req.body;
     
         // Password hashing
         const hashedPassword = await bcrypt.hash(password, 10);
     
         const user = new userModel({
+          uid,
           name,
           email,
           password: hashedPassword,
