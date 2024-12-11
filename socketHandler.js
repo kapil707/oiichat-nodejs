@@ -207,38 +207,34 @@ function initializeSocket(io) {
       // call only
       // Listen for signaling data and forward it to the target peer
       // Handle signaling data
-      socket.on('signal', (data) => {
-        const {your_id, target, signal } = data;
-        if (target) {
-            console.log(`Signal from ${users[your_id]} to ${target}`);
-            io.to(target).emit('signal', { signal, sender: users[your_id] });
-        } else {
-            console.log(`Target not found: ${target}`);
-        }
-      });
+      // socket.on('signal', (data) => {
+      //   const {your_id, target, signal } = data;
+      //   if (target) {
+      //       console.log(`Signal from ${users[your_id]} to ${target}`);
+      //       io.to(target).emit('signal', { signal, sender: users[your_id] });
+      //   } else {
+      //       console.log(`Target not found: ${target}`);
+      //   }
+      // });
 
     //new
 
-    socket.on('calling', (data) => {
-      const {user1, user2, signal } = data;
-      if (user2) {
-          console.log(`Signal from ${users[user1]} to ${user2}`);
-          io.to(user2).emit('incoming_call', { signal, sender: users[user1] });
+    // Handle call request
+    socket.on('call-user', ({ from, to }) => {
+      if (users[to]) {
+          io.to(users[to]).emit('incoming-call', { from });
       } else {
-          console.log(`user2 not found: ${user2}`);
+          socket.emit('user-unavailable', { to });
       }
-    });
+  });
 
-    socket.on('incoming_call_answer', (data) => {
-      console.log('incoming_call_answer');
-      const {user1, target, signal } = data;
-      if (target) {
-          console.log(`incoming_call_answer from ${users[user1]} to ${target}`);
-          io.to(target).emit('incoming_call_answer_done', { signal, sender: users[user1] });
-      } else {
-          console.log(`user2 not found: ${target}`);
+  // Handle signaling data
+  socket.on('signal', (data) => {
+      const { to, signal } = data;
+      if (users[to]) {
+          io.to(users[to]).emit('signal', { from: socket.id, signal });
       }
-    });
+  });
 
     socket.on("get_user_2_socket_id", (user2) => {
       console.log(`${user2} get_user_2_socket_id`);
