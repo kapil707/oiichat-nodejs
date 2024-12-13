@@ -21,19 +21,44 @@ io.on('connection', (socket) => {
     });
 
     // Handle call request
-    socket.on('call-user', ({ from, to }) => {
-        if (users[to]) {
-            io.to(users[to]).emit('incoming-call', { from });
+    socket.on('request-call', ({ userA, userB }) => {
+        console.log(`request-call from ${userA} to ${userB}`);
+        if (users[userB]) {
+            io.to(users[userB]).emit('incoming-call', { userA });
         } else {
-            socket.emit('user-unavailable', { to });
+            socket.emit('user-unavailable', { userB });
         }
     });
 
+    socket.on('accept-call', ({ userA, userB,signal }) => {
+        console.log(`accept-call-by-user from ${userA} to ${userB}`);
+        if (users[userA]) {
+            io.to(users[userA]).emit('accept-call-by-user', { userA,userB,signal});
+        } else {
+            socket.emit('user-unavailable', { userB });
+        }
+    });
+
+    socket.on('call-candidate', ({ userA, userB,signal }) => {
+        console.log(`call-candidate from ${userA} to ${userB}`);
+    });
+
     // Handle signaling data
+    // socket.on('signal', (data) => {
+    //     const { userA,userB, signal } = data;
+    //     console.log(`signal from ${userA} to ${userB}`);
+    //     if (users[userB]) {
+    //         io.to(users[userB]).emit('signal', { userA: userA,userB:userB, signal });
+    //     }
+    // });
+
     socket.on('signal', (data) => {
-        const { to, signal } = data;
-        if (users[to]) {
-            io.to(users[to]).emit('signal', { from: socket.id, signal });
+        const {your_id, target, signal } = data;
+        if (users[target]) {
+            console.log(`Signal from ${your_id} to ${target}`);
+            io.to(users[target]).emit('signal', { signal, sender: users[your_id] });
+        } else {
+            console.log(`Target not found: ${target}`);
         }
     });
 
