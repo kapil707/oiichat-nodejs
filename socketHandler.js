@@ -219,22 +219,33 @@ function initializeSocket(io) {
 
     //new
 
-    // Handle call request
-    socket.on('call-user', ({ from, to }) => {
-      if (users[to]) {
-          io.to(users[to]).emit('incoming-call', { from });
-      } else {
-          socket.emit('user-unavailable', { to });
-      }
-  });
 
   // Handle signaling data
-  socket.on('signal', (data) => {
-      const { to, signal } = data;
-      if (users[to]) {
-          io.to(users[to]).emit('signal', { from: socket.id, signal });
-      }
-  });
+  // socket.on('signal', (data) => {
+  //     const { to, signal } = data;
+  //     if (users[to]) {
+  //         io.to(users[to]).emit('signal', { from: socket.id, signal });
+  //     }
+  // });
+
+    // Handle call request
+    socket.on('request-call', ({ user1, user2 }) => {
+        console.log(`request-call from ${user1} to ${user2}`);
+        if (users[user2]) {
+            io.to(users[user2]).emit('incoming-call', { user1 });
+        } else {
+            socket.emit('user-unavailable', { user2 });
+        }
+    });
+
+    socket.on('accept-call', ({ user1, user2  }) => {
+        console.log(`accept-call-by-user from ${user1} to ${user2}`);
+        if (users[user1]) {
+            io.to(users[user1]).emit('accept-call-by-user', { user1,user2 });
+        } else {
+            socket.emit('user-unavailable', { user1 });
+        }
+    });
 
     socket.on("get_user_2_socket_id", (user2) => {
       console.log(`${user2} get_user_2_socket_id`);
