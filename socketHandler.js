@@ -230,10 +230,11 @@ function initializeSocket(io) {
 
     // Handle call request
     // jab user1 user2 ko call karta ha
-    socket.on('request-call', ({ user1, user2 }) => {
-        console.log(`request-call from ${user1} to ${user2}`);
+    socket.on('request-call', async ({ user1, user2 }) => {
+      const user1_dt = await userModel.findOne({ _id: user1 });
+        console.log(`request-call from ${user1} to ${user2} name ${user1_dt.name}`);
         if (users[user2]) {
-            io.to(users[user2]).emit('incoming-call', { user1,user2 });
+            io.to(users[user2]).emit('incoming-call', { user1,user2,user_name:user1_dt.name, });
         } else {
             socket.emit('user-unavailable', { user2 });
         }
