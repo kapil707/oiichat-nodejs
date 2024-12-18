@@ -232,7 +232,7 @@ function initializeSocket(io) {
     socket.on('request-call', ({ user1, user2 }) => {
         console.log(`request-call from ${user1} to ${user2}`);
         if (users[user2]) {
-            io.to(users[user2]).emit('incoming-call', { user1 });
+            io.to(users[user2]).emit('incoming-call', { user1,user2 });
         } else {
             socket.emit('user-unavailable', { user2 });
         }
@@ -241,7 +241,7 @@ function initializeSocket(io) {
     socket.on('request-call-decline', ({ user1, user2 }) => {
       console.log(`request-call-decline from ${user1} to ${user2}`);
       if (users[user2]) {
-          io.to(users[user2]).emit('incoming-call-decline', { user1 });
+          io.to(users[user2]).emit('incoming-call-decline', { user1,user2 });
       } else {
           socket.emit('user-unavailable', { user2 });
       }
