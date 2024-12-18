@@ -234,7 +234,7 @@ function initializeSocket(io) {
         const user1_dt = await userModel.findOne({ _id: user1 });
         console.log(`request-call from ${user1} to ${user2} name ${user1_dt.name}`);
         if (users[user2]) {
-            io.to(users[user2]).emit('incoming-call', { user1,user2,user_name:user1_dt.name, });
+            io.to(users[user2]).emit('incoming-call', { user1,user2,user_name:user1_dt.name,user_image:user1_dt.user_image });
         } else {
             socket.emit('user-unavailable', { user2 });
         }
