@@ -241,8 +241,9 @@ function initializeSocket(io) {
     });
 
     //jiss user nay call ki ha agar wo he call cut karta ha to
-    socket.on('request-call-cancel', ({ user1, user2 }) => {
-      console.log(`request-call-cancel from ${user1} to ${user2}`);
+    socket.on('request-call-cancel', async ({ user1, user2 }) => {
+      const user1_dt = await userModel.findOne({ _id: user1 });
+      console.log(`request-call-cancel from ${user1} to ${user2} name ${user1_dt.name}`);
       if (users[user2]) {
           io.to(users[user2]).emit('incoming-call-cancel', { user1,user2 });
       } else {
