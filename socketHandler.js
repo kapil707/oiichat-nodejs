@@ -255,15 +255,16 @@ function initializeSocket(io) {
     socket.on('request-call-reject', async ({ user1, user2 }) => {
       const user1_dt = await userModel.findOne({ _id: user1 });
       console.log(`request-call-reject from ${user1} to ${user2} name ${user1_dt.name}`);
-      if (users[user2]) {
-          io.to(users[user2]).emit('reject-call-by-user', { user1,user2 });
+      if (users[user1]) {
+          io.to(users[user1]).emit('reject-call-by-user', { user1,user2 });
       } else {
           socket.emit('user-unavailable', { user2 });
       }
     });
 
-    socket.on('accept-call', ({ user1, user2  }) => {
-        console.log(`accept-call-by-user from ${user1} to ${user2}`);
+    socket.on('accept-call', async ({ user1, user2 }) => {
+      const user1_dt = await userModel.findOne({ _id: user1 });
+        console.log(`accept-call-by-user from ${user1} to ${user2} name ${user1_dt.name}`);
         if (users[user1]) {
             io.to(users[user1]).emit('accept-call-by-user', { user1,user2 });
         } else {
