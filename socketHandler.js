@@ -231,7 +231,7 @@ function initializeSocket(io) {
     // Handle call request
     // jab user1 user2 ko call karta ha
     socket.on('request-call', async ({ user1, user2 }) => {
-        const user1_dt = await userModel.findOne({ _id: user2 });
+        const user1_dt = await userModel.findOne({ _id: user1 });
         console.log(`request-call from ${user1} to ${user2} name ${user1_dt.name}`);
         if (users[user2]) {
             io.to(users[user2]).emit('incoming-call', { user1,user2,user_name:user1_dt.name, });
@@ -252,7 +252,7 @@ function initializeSocket(io) {
 
     //jiss ke pass call ayi ha agar wo call cut karta ha to
     socket.on('request-call-reject', async ({ user1, user2 }) => {
-      const user1_dt = await userModel.findOne({ _id: user2 });
+      const user1_dt = await userModel.findOne({ _id: user1 });
       console.log(`request-call-reject from ${user1} to ${user2} name ${user1_dt.name}`);
       if (users[user2]) {
           io.to(users[user2]).emit('reject-call-by-user', { user1,user2 });
