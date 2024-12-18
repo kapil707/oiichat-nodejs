@@ -229,6 +229,7 @@ function initializeSocket(io) {
   // });
 
     // Handle call request
+    // jab user1 user2 ko call karta ha
     socket.on('request-call', ({ user1, user2 }) => {
         console.log(`request-call from ${user1} to ${user2}`);
         if (users[user2]) {
@@ -238,14 +239,25 @@ function initializeSocket(io) {
         }
     });
 
-    socket.on('request-call-decline', ({ user1, user2 }) => {
-      console.log(`request-call-decline from ${user1} to ${user2}`);
+    //jiss user nay call ki ha agar wo he call cut karta ha to
+    socket.on('request-call-cancel', ({ user1, user2 }) => {
+      console.log(`request-call-cancel from ${user1} to ${user2}`);
       if (users[user2]) {
-          io.to(users[user2]).emit('incoming-call-decline', { user1,user2 });
+          io.to(users[user2]).emit('incoming-call-cancel', { user1,user2 });
       } else {
           socket.emit('user-unavailable', { user2 });
       }
-  });
+    });
+
+    //jiss ke pass call ayi ha agar wo call cut karta ha to
+    socket.on('request-call-reject', ({ user1, user2 }) => {
+      console.log(`request-call-reject from ${user1} to ${user2}`);
+      if (users[user2]) {
+          io.to(users[user2]).emit('reject-call-by-user', { user1,user2 });
+      } else {
+          socket.emit('user-unavailable', { user2 });
+      }
+    });
 
     socket.on('accept-call', ({ user1, user2  }) => {
         console.log(`accept-call-by-user from ${user1} to ${user2}`);
