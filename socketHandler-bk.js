@@ -208,16 +208,26 @@ function initializeSocket(io) {
       // Listen for signaling data and forward it to the target peer
       // Handle signaling data
       socket.on('signal', (data) => {
-        const {user1, user2, signal } = data;
-        if (users[user2]) {
-            console.log(`Signal from ${users[user1]} to ${users[user2]}`);
-            io.to(users[user2]).emit('signal', { signal, sender: users[user1] });
+        const {your_id, target, signal } = data;
+        if (target) {
+            console.log(`Signal from ${users[your_id]} to ${target}`);
+            io.to(target).emit('signal', { signal, sender: users[your_id] });
         } else {
-            console.log(`Target not found: ${users[user2]}`);
+            console.log(`Target not found: ${target}`);
         }
       });
 
     //new
+
+
+  // Handle signaling data
+  // socket.on('signal', (data) => {
+  //     const { to, signal } = data;
+  //     if (users[to]) {
+  //         io.to(users[to]).emit('signal', { from: socket.id, signal });
+  //     }
+  // });
+
     // Handle call request
     // jab user1 user2 ko call karta ha
     socket.on('request-call', async ({ user1, user2 }) => {
