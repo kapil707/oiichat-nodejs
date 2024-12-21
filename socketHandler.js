@@ -208,12 +208,12 @@ function initializeSocket(io) {
       // Listen for signaling data and forward it to the target peer
       // Handle signaling data
       socket.on('signal', (data) => {
-        const {user1, user2, signal } = data;
-        console.log(`Signal from ${user1} = ${users[user1]} to ${user2} = ${users[user2]}`);
-        if (users[user2]) {
-            io.to(users[user2]).emit('signal', { signal, sender: users[user1] });
+        const {user1, target, signal } = data;
+        console.log(`Signal from ${user1} = ${users[user1]} to ${target}`);
+        if (target) {
+            io.to(target).emit('signal', { signal, sender: users[user1] });
         } else {
-            console.log(`Target not found: ${users[user2]}`);
+            console.log(`Target not found: ${target}`);
         }
       });
 
