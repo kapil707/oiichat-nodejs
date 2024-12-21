@@ -209,8 +209,8 @@ function initializeSocket(io) {
       // Handle signaling data
       socket.on('signal', (data) => {
         const {user1, user2, signal } = data;
+        console.log(`Signal from ${user1} = ${users[user1]} to ${user2} = ${users[user2]}`);
         if (users[user2]) {
-            console.log(`Signal from ${users[user1]} to ${users[user2]}`);
             io.to(users[user2]).emit('signal', { signal, sender: users[user1] });
         } else {
             console.log(`Target not found: ${users[user2]}`);
